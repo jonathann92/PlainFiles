@@ -32,10 +32,31 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "good job"
-          },
-          "405": {
-            "description": "Invalid input"
+            "description": "Pet Object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            },
+            "links": {
+              "GetPetById": {
+                "operationId": "getPetById",
+                "parameters": {
+                  "petId": "$response.body#/id"
+                }
+              },
+              "UpdatePetById": {
+                "operationId": "updatePet",
+                "requestBody": "$response.body#/id"
+              }
+            }
           }
         },
         "security": [
@@ -97,8 +118,7 @@
             "description": "ID of pet to return",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
@@ -297,7 +317,35 @@
         }
       }
     },
-    "responses": {},
+    "responses": {
+      "PetResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        },
+        "description": "Pet Object",
+        "links": {
+          "GetPetById": {
+            "operationId": "getPetById",
+            "parameters": {
+              "petId": "$response.body#/id"
+            }
+          },
+          "UpdatePetById": {
+            "operationId": "updatePet",
+            "requestBody": "$response.body#/id"
+          }
+        }
+      }
+    },
     "parameters": {},
     "examples": {},
     "requestBodies": {
