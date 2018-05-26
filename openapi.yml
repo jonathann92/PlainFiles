@@ -21,10 +21,24 @@ paths:
       operationId: addPet
       parameters: []
       responses:
-        '2XX':
-          $ref: '#/components/responses/PetResponse'
-        '404':
-          description: Not found
+        '200':
+          description: Pet Object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+          links:
+            # GET /users/{userId}
+            GetPetById:
+              operationId: getPetById
+              parameters:
+                petId: '$response.body#/id'
+            UpdatePetById:
+              operationId: updatePet
+              requestBody: '$response.body#/id'
       security:
         - petstore_auth:
             - 'write:pets'
@@ -205,11 +219,11 @@ components:
       description: Pet Object
       links:
         # GET /users/{userId}
-        GetUserByUserId:
+        GetPetById:
           operationId: getPetById
           parameters:
             petId: '$response.body#/id'
-        SetManagerId:
+        UpdatePetById:
           operationId: updatePet
           requestBody: '$response.body#/id'
         
