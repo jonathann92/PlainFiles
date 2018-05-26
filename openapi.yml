@@ -21,10 +21,10 @@ paths:
       operationId: addPet
       parameters: []
       responses:
-        '200':
-          description: good job
-        '405':
-          description: Invalid input
+        '2XX':
+          $ref: '#/components/responses/PetResponse'
+        '404':
+          description: Not found
       security:
         - petstore_auth:
             - 'write:pets'
@@ -193,7 +193,26 @@ components:
             - sold
       xml:
         name: Pet
-  responses: {}
+  responses:
+    PetResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+      description: Pet Object
+      links:
+        # GET /users/{userId}
+        GetUserByUserId:
+          operationId: getPetById
+          parameters:
+            petId: '$response.body#/id'
+        SetManagerId:
+          operationId: updatePet
+          requestBody: '$response.body#/id'
+        
   parameters: {}
   examples: {}
   requestBodies:
@@ -230,3 +249,4 @@ components:
       name: api_key
       in: header
   headers: {}
+    
