@@ -17,7 +17,7 @@ paths:
       tags:
         - pet
       summary: Add a new pet to the store
-      description: 'Add pet'
+      description: ''
       operationId: addPet
       parameters: []
       responses:
@@ -36,6 +36,33 @@ paths:
               operationId: getPetById
               parameters:
                 petId: '$response.body#/id'
+            UpdatePetById:
+              operationId: updatePet
+              requestBody: '$response.body#/id'
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        $ref: '#/components/requestBodies/Pet'
+    put:
+      tags:
+        - pet
+      summary: Update an existing pet
+      description: ''
+      operationId: updatePet
+      parameters: []
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
       requestBody:
         $ref: '#/components/requestBodies/Pet'
   '/pet/{petId}':
@@ -51,7 +78,8 @@ paths:
           description: ID of pet to return
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: successful operation
@@ -173,7 +201,8 @@ components:
             petId: '$response.body#/id'
         UpdatePetById:
           operationId: updatePet
-          requestBody: '$response.body#/id'
+          requestBody: 
+            id: '$response.body#/id'
   parameters: {}
   examples: {}
   requestBodies:
@@ -201,4 +230,3 @@ components:
       name: api_key
       in: header
   headers: {}
-    
