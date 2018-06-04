@@ -202,7 +202,9 @@ components:
         UpdatePetById:
           operationId: updatePet
           requestBody: 
-            id: '$response.body#/id'
+            id: '$response.body#/id' # possible way to assign pet 'id' field in the updatePet schema
+                                     # to the pet 'id' field in the response.body
+                                     # and the other fields in the schema will stay as their default examples
   parameters: {}
   examples: {}
   requestBodies:
